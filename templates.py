@@ -31,6 +31,22 @@ COMMANDS += "\nread_file <name>                            | Read file with <nam
 COMMANDS += "\nwrite_file <name> <input>                   | Write <input> to file <name>."
 COMMANDS += "\ncreate_folder <name>                        | Create a new folder with <name>."
 
+
+# -----DELETE---------------------
+def delete_success(user):
+    """
+    Delete user template.
+    """
+    return "\nYep, Deleted user with username " + user + " successfully"
+
+def no_user_found(user):
+    """
+    No user found template
+    """
+    return "\nYo, No such user with username " + user + " found. Check username again."
+
+
+
 # ----CHANGE FOLDER-----------------
 INCORRECT_DIRECTORY = "\nYo, Check your directory name again. Its wrong."
 
