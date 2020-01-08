@@ -70,6 +70,31 @@ class RequestHandler():
         self.present_directory = ""
         self.read_record = {}
         self.read_char = 100
+
+    def load_passwords(self):
+        """
+        Load passwords form session
+
+        Return : dict{user:password}
+            Returns a dictionary of username and passwords.
+
+        """
+        with open("server_session/server_data") as file:
+            data = json.load(file)
+        return data["passwords"][0]
+
+    def load_privileges(self):
+        """
+        Load privileges form session
+
+        Return : dict{user:privileges}
+            Returns a dictionary of username and privileges.
+
+        """
+        with open("server_session/server_data") as file:
+            data = json.load(file)
+        return data["privileges"][0]
+
         
         
      def respond(self, statement):
