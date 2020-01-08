@@ -318,3 +318,228 @@ class RequestHandler():
         user_path = join("server_session", user)
         shutil.rmtree(user_path)
         return delete_success(user)
+    
+    def check_folder_path(self, directory):
+        """
+        Check available folders in a directory
+
+        Parameters:
+            directory : str
+
+        Return: bool
+            Directory in available directories.
+        """
+        total = []
+        for direc, files, sub in os.walk(join("server_session", self.username)):
+            total.append(normpath(realpath(direc)))
+        total_path = join("server_session", self.username, self.present_directory, directory)
+        real_path = realpath(total_path)
+        path_to_be_change = normpath(real_path)
+        return not path_to_be_change in total
+
+    def change_folder(self, directory):
+        """
+        Change folder command.
+
+        Parameters:
+            directory : str
+
+        Return: str
+            Change folder response
+
+        """
+        if self.login_required():
+            return LOGIN_REQUIRED
+        if self.check_folder_path(directory):
+            return INCORRECT_DIRECTORY
+        self.present_directory = join(self.present_directory, directory)
+        return ch_dir_success(directory)
+
+    def list(self):
+        """
+        List command.
+
+        Return: str
+            List response.
+        """
+        if self.login_required():
+            return LOGIN_REQUIRED
+        total_files = []
+        for file in os.listdir(join("server_session", self.username, self.present_directory)):
+            total_files.append(file)
+        return list_folder(total_files)
+
+    def list_files(self):
+        """
+        Available files in folder.
+
+        Return: list
+            List of files
+        """
+        available_files = []
+        for file in os.listdir(join("server_session", self.username, self.present_directory)):
+            if isfile(join("server_session", self.username, self.present_directory, file)):
+                available_files.append(file)
+        return available_files
+
+    def load_read_indexes(self, path):
+        """
+        Load the read index status of user's session.
+
+        Parameters:
+            path : str
+
+        Return: int
+            index of file read.
+        """
+        try:
+            return self.read_record[path]
+        except KeyError:
+            self.read_record[path] = 0
+            return self.read_record[path]
+
+    def get_total_path(self, path):
+        """
+        Get full path.
+
+        Parameters:
+            path : str
+
+        Return: str
+            absolute path of the path parameter.
+        """
+        return join("server_session", self.username, self.present_directory, path)
+
+    def read_content(self, path):
+        """
+        Read content with its read index.
+
+        Parameters:
+            path : str
+
+        Return: str
+            Data of file.
+
+        """
+        path = self.get_total_path(path)
+        self.load_read_indexes(path)
+        with open(path, "r") as file:
+            contents = file.read()
+        index = str(self.read_record[path]*self.read_char)
+        data = contents[self.read_record[path]*self.read_char:((self.read_record[path]*self.read_char)+1)*self.read_char]
+        self.read_record[path] += 1
+        self.read_record[path] %= len(contents)//self.read_char + 1
+        return read_file(index, data)
+
+    def check_file_path_to_read(self, path):
+        """
+        File in folder or not.
+
+        Parameters:
+            path : str
+
+        Return: bool
+            File to be read in path or not.
+        """
+        total_files = self.list_files()
+        return not path in total_files
+
+    def read_file(self, path):
+        """
+        Read file command.
+
+        Parameters:
+            path : str
+
+        Return: str
+            Read file response
+        """
+        if self.login_required():
+            return LOGIN_REQUIRED
+        if self.check_file_path_to_read(path):
+            return READ_WRONG_PATH
+        return self.read_content(path)
+
+    def check_file_path_to_write(self, path):
+        """
+        Check file in folder or not.
+
+        Parameters:
+            path : str
+
+        Return: bool
+            File in directory or not.
+        """
+        total_files = self.list_files()
+        return not path in total_files
+
+    def write(self, path, data, method):
+        """
+        Write data to file.
+
+        Parameters:
+            path : str
+            data : str
+            method : str
+                Write or append method.
+        """
+        path = self.get_total_path(path)
+        if method == "w":
+            with open(path, "w+") as file:
+                file.write(data)
+                return
+        with open(path, "a+") as file:
+            file.write("\n" + data)
+
+    def write_file(self, path, data):
+        """
+        Write file command.
+
+        Parameters:
+            path : str
+            data : str
+
+        Return: str
+            Write file response
+        """
+        if self.login_required():
+            return LOGIN_REQUIRED
+        if self.check_file_path_to_write(path):
+            self.write(path, data, "w")
+            return WRITE_NEW_PATH
+        self.write(path, data, "a")
+        return WRITE_EXISTING
+
+    def check_subdirectories(self, path):
+        """
+        Check subdirectories of a path
+
+        Parameters:
+            path : str
+
+        Return: bool
+            Path in available directories.
+        """
+        present_directory = join("server_session", self.username, self.present_directory)
+        directories = []
+        for sub in os.listdir(present_directory):
+            if isdir(join(present_directory, sub)):
+                directories.append(sub)
+        return path in directories
+
+    def create_folder(self, path):
+        """
+        Create folder in a path.
+
+        Parameters:
+            path : str
+
+        Return: str
+            Create folder response
+        """
+        if self.login_required():
+            return LOGIN_REQUIRED
+        if self.check_subdirectories(path):
+            return DIRECTORY_PRESENT
+        os.mkdir(self.get_total_path(path))
+        return DIRECTORY_SUCCESS
