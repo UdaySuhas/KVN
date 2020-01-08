@@ -72,7 +72,7 @@ class RequestHandler():
         self.read_char = 100
         
         
-         def respond(self, statement):
+     def respond(self, statement):
         """
         Respont to execute all of the commands
 
@@ -121,8 +121,97 @@ class RequestHandler():
         if executer == "delete":
             return self.delete(statement[1], statement[2])
         return "Invalid command"
+    
+    
+    def add_new_user(self, user, password, privileges):
+        """
+        Add a new user and save the user to session.
+
+        Parameters:
+            user : str
+            password : str
+            privileges : str
+
+        """
+        self.user_passwords[user] = password
+        self.user_privileges[user] = privileges
+        with open("server_session/server_data", "w+") as file:
+            json.dump({"passwords":[self.user_passwords], "privileges":[self.user_privileges]}, file)
+        os.mkdir(join("server_session", user))
+
+    def rewrite_session(self):
+        """
+        Update the session.
+        """
+        with open("server_session/server_data", "w+") as file:
+            json.dump({"passwords":[self.user_passwords], "privileges":[self.user_privileges]}, file)
+
+    def commands(self):
+        """
+        All available commands on server
+
+        Return: str
+            List of all commands.
+        """
+        return COMMANDS
+
+    def login_required(self):
+        """
+        Is logged in or not.
+
+        Return: bool
+            Logged in or not
+        """
+        return not self.login_flag
+
+    def admin_required(self):
+        """
+        Is admin or not.
+
+        Return: bool
+            Is admin or not
+        """
+        return not self.user_privileges[self.username] == "admin"
+
+    def user_availability(self, user):
+        """
+        User available in session data or not.
+
+        Parameters:
+            user : str
+
+        Return: bool
+            User available or not
+        """
+        return not user in list(self.user_passwords.keys())
+
+    def password_check(self, user, password):
+        """
+        Validate password of the user.
+
+        Parameters:
+            user : str
+            password : str
+
+        Return: bool
+            correct password ot wrong.
+        """
+        return not password == self.user_passwords[user]
+
+    def self_password_check(self, password):
+        """
+        Validate self password.
+
+        Parameters:
+            password : str
+
+        Return: bool
+            Check self password.
+        """
+        return self.password_check(self.username, password)
+
         
-         def login(self, user, password):
+     def login(self, user, password):
         """
         Login command.
         Parameters:
