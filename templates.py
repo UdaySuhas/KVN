@@ -31,7 +31,14 @@ COMMANDS += "\nread_file <name>                            | Read file with <nam
 COMMANDS += "\nwrite_file <name> <input>                   | Write <input> to file <name>."
 COMMANDS += "\ncreate_folder <name>                        | Create a new folder with <name>."
 
+# ----CHANGE FOLDER-----------------
+INCORRECT_DIRECTORY = "\nYo, Check your directory name again. Its wrong."
 
+def ch_dir_success(direc):
+    """
+    Change directory template.
+    """
+    return "\nYes, Changed directory to " + direc + " successfully"
 
 # -------LIST-------------------
 def list_folder(total_list):
