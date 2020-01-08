@@ -30,3 +30,29 @@ COMMANDS += "\nchange_folder <name>                        | Change current fold
 COMMANDS += "\nread_file <name>                            | Read file with <name>."
 COMMANDS += "\nwrite_file <name> <input>                   | Write <input> to file <name>."
 COMMANDS += "\ncreate_folder <name>                        | Create a new folder with <name>."
+
+
+
+# -------LIST-------------------
+def list_folder(total_list):
+    """
+    List folder template.
+    """
+    return "\n" + "\n".join(total_list)
+
+# ------READ FILE--------------
+READ_WRONG_PATH = "\nYo, check your path again. Its Wrong."
+
+def read_file(start, data):
+    """
+    Read file template.
+    """
+    return "\n" + "--------------------------FILE READER------------------------------\n-----------Currently showing characters " + start + " to " + str(int(start) + 100) + "------------------- \n" + data
+
+# ------WRITE FLE--------------
+WRITE_NEW_PATH = "\nWritten in new file."
+WRITE_EXISTING = "\nCompleted."
+
+# ------CREATE FOLDER----------
+DIRECTORY_SUCCESS = "\nCompleted making a new directory!"
+DIRECTORY_PRESENT = "\nDirectory exists already!"
