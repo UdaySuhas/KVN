@@ -10,6 +10,7 @@ else:
     conn = socket.socket()
     conn.connect((ip, 8080))
 
+    
 def respond(inp):
     if inp == "":
         return
