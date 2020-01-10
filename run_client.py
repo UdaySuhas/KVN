@@ -22,7 +22,6 @@ def respond(inp):
     response = conn.recv(4096)
     print("Server -> " + str(response, "utf-8"))
 
-
 print("Connected to server!\n")
 while True:
     INP = input("Input command -> ")
