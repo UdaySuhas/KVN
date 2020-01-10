@@ -527,6 +527,7 @@ class RequestHandler():
                 directories.append(sub)
         return path in directories
 
+    
     def create_folder(self, path):
         """
         Create folder in a path.
