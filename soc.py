@@ -99,3 +99,18 @@ class SocketAttach():
         socket_object.listen(5)
         print("Successfully opened server at port 8080")
         return socket_object
+    def connection_accept_async(self):
+        """
+        Start accepting connections.
+        """
+        while True:
+            try:
+                conn, address = self.socket_object.accept()
+                self.socket_object.setblocking(1)
+                self.connections.append(conn)
+                self.ips.append(address)
+                self.threads[address] = False
+                self.connection_api[address] = RequestHandler()
+                print("Connection established from ip :" + address[0])
+            except:
+                print("Error in accepting connections")
