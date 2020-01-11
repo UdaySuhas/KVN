@@ -46,3 +46,21 @@ def is_finished_with_step_three():
     """Run the second batch of tests"""
     print('-'*70 + "\nStarting test suite 3:\n")
     return is_finished_with_step(ReqClassTestingStepThree)
+
+def is_finished_with_step_four():
+    """Run the second batch of tests"""
+    print('-'*70 + "\nStarting test suite 4:\n")
+    return is_finished_with_step(ReqClassTestingStepFour)
+
+if __name__ == "__main__":
+    if is_finished_with_step_one() is not True:
+        print("\n\tThe first testing step did not pass," +
+              "either because of a failed or a skipped test.")
+        print("\tFurther testing will not continue until these tests pass.")
+        sys.exit(1)
+
+    elif is_finished_with_step_two() is not True:
+        print("\n\tThe second testing step did not pass," +
+              "either because of a failed or a skipped test.")
+        print("\tFurther testing will not continue until these tests pass.")
+        sys.exit(1)
