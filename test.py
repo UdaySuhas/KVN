@@ -3,8 +3,8 @@ import sys
 import random
 import string
 
-from server.api import RequestHandler
-from server.templates import *
+from api import RequestHandler
+from templates import *
 
 def random_folder(string_length=6):
     """Generate a random string of fixed length """
