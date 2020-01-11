@@ -1,5 +1,5 @@
 """run server"""
-from server.server import Server
+from server import Server
 
 SER = Server()
 
