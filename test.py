@@ -81,3 +81,40 @@ class ReqClassTestingStepTwo(unittest.TestCase):
         results.append(req_handle.list())
 
         self.assertListEqual(results, expected_results)
+
+        
+ class ReqClassTestingStepThree(unittest.TestCase):
+    """Handles the tests to check response for change folder and create folder"""
+
+    def test_server_change_folder(self):
+        """
+        This test will check response for change folder.
+        Test1 : Change folder without login.
+        Test2 : Wrong directory change.
+        Test3 : Proper directory change.
+        """
+        results = []
+        expected_results = [LOGIN_REQUIRED, INCORRECT_DIRECTORY, ch_dir_success("testfolder1")]
+        req_handle = RequestHandler()
+        req_handle.user_passwords = {"test":"123"}
+        results.append(req_handle.change_folder("testfolder1"))
+        req_handle.login("test", "123")
+        results.append(req_handle.change_folder("testfolder2"))
+        results.append(req_handle.change_folder("testfolder1"))
+
+        self.assertListEqual(results, expected_results)
+
+    def test_server_create_folder(self):
+        """
+        This test will check response for create folder.
+        Test1 : Create already present directory.
+        Test2 : Proper directory with random name.
+        """
+        results = []
+        expected_results = [DIRECTORY_PRESENT, DIRECTORY_SUCCESS]
+        req_handle = RequestHandler()
+        req_handle.user_passwords = {"test":"123"}
+        req_handle.login("test", "123")
+        results.append(req_handle.create_folder("testfolder1"))
+        req_handle.change_folder("testfolder1")
+        results.append(req_handle.create_folder("test" + random_folder()))
