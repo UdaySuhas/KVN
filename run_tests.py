@@ -64,3 +64,17 @@ if __name__ == "__main__":
               "either because of a failed or a skipped test.")
         print("\tFurther testing will not continue until these tests pass.")
         sys.exit(1)
+        
+        elif is_finished_with_step_three() is not True:
+        print("\n\tThe third testing step did not pass," +
+              "either because of a failed or a skipped test.")
+        print("\tFurther testing will not continue until these tests pass.")
+        sys.exit(1)
+
+    elif is_finished_with_step_four() is not True:
+        print("\n\tThe fourth testing step did not pass," +
+              "either because of a failed or a skipped test.")
+        print("\tFurther testing will not continue until these tests pass.")
+        sys.exit(1)
+
+    sys.exit(0)
