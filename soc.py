@@ -7,7 +7,7 @@ import socket
 import threading
 import os
 
-from api import RequestHandler
+from .api import RequestHandler
 
 class SocketAttach():
     """
