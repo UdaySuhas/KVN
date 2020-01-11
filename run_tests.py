@@ -41,3 +41,8 @@ def is_finished_with_step_two():
     """Run the second batch of tests"""
     print('-'*70 + "\nStarting test suite 2:\n")
     return is_finished_with_step(ReqClassTestingStepTwo)
+
+def is_finished_with_step_three():
+    """Run the second batch of tests"""
+    print('-'*70 + "\nStarting test suite 3:\n")
+    return is_finished_with_step(ReqClassTestingStepThree)
