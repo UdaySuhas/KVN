@@ -7,7 +7,7 @@ Each test method has the same description regarding the test as presented in 'ru
 import unittest
 import sys
 
-from test import ReqClassTestingStepOne, ReqClassTestingStepTwo, ReqClassTestingStepThree, ReqClassTestingStepFour
+from .test import ReqClassTestingStepOne, ReqClassTestingStepTwo, ReqClassTestingStepThree, ReqClassTestingStepFour
 """
 Tests
 """
