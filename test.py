@@ -117,4 +117,44 @@ class ReqClassTestingStepTwo(unittest.TestCase):
         req_handle.login("test", "123")
         results.append(req_handle.create_folder("testfolder1"))
         req_handle.change_folder("testfolder1")
-        results.append(req_handle.create_folder("test" + random_folder()))
+        results.append(req_handle.create_folder("test" + random_folder())
+
+        self.assertListEqual(results, expected_results)
+
+
+class ReqClassTestingStepFour(unittest.TestCase):
+    """Handles the final part of the tests inculting tests for read and write the files"""
+
+    def test_server_read_file(self):
+        """
+        This test will check read file.
+        Test1 : Read the non existing file.
+        Test2 : Proper read file.
+        """
+        results = []
+        expected_results = [READ_WRONG_PATH, read_file("0","DontChangeThisContent")]
+        req_handle = RequestHandler()
+        req_handle.user_passwords = {"test":"123"}
+        req_handle.login("test", "123")
+        req_handle.change_folder("testfolder1")
+        results.append(req_handle.read_file("test_read2.txt"))
+        results.append(req_handle.read_file("test_read.txt"))
+
+        self.assertListEqual(results, expected_results)
+
+    def test_server_write_file(self):
+        """
+        This test will check write file.
+        Test1 : Write on non existing file.
+        Test2 : Proper write file.
+        """
+        results = []
+        expected_results = [WRITE_NEW_PATH, WRITE_EXISTING]
+        req_handle = RequestHandler()
+        req_handle.user_passwords = {"test":"123"}
+        req_handle.login("test", "123")
+        req_handle.change_folder("testfolder1")
+        results.append(req_handle.write_file(random_folder() + ".txt", "content"))
+        results.append(req_handle.write_file("test_write.txt", "content"))
+
+        self.assertListEqual(results, expected_results)
