@@ -2,7 +2,7 @@
 Main server class, socket attacher to attach socket.
 """
 
-from soc import SocketAttach
+from .soc import SocketAttach
 
 class Server():
     """
